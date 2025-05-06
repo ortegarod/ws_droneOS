@@ -1,13 +1,7 @@
-# === docker-compose.yml (Template for a SINGLE Drone Raspberry Pi) ===
+# === docker-compose.dev.yml (Template for a SINGLE PX4 SITL Drone) ===
 #
-# CONTEXT: This file is configured for Drone 3 (drone3), intended to run on its
-# dedicated hardware (e.g., Raspberry Pi). It assumes drone1 and drone2 are
-# potentially running in a separate SITL environment.
 #
-# Place this file in the root of the ws_droneOS workspace on the target RPi.
 # Customize the placeholders below FOR EACH DRONE before running 'docker-compose up -d'.
-# USE THE VALUES THAT MATCH YOUR SPECIFIC HARDWARE AND CONFIGURATION.
-# run the command: docker-compose up -d
 #
 
 services:
@@ -68,11 +62,6 @@ services:
     container_name: micro_agent_service # Explicit name for the running container
     network_mode: "host" # ESSENTIAL: Use the host's network for core comms & PX4 device access
     restart: unless-stopped # Optional: Restart policy
-    devices:
-      # Map the stable host symlink (created by udev rule in /etc/udev/rules.d/99-pixhawk.rules)
-      # to the path the agent expects inside the container (/dev/ttyUSB0).
-      # The agent command MUST use the container path (/dev/ttyUSB0).
-      - "/dev/pixhawk-telem2:/dev/ttyUSB0" # STABLE_HOST_SYMLINK:CONTAINER_PATH
     environment:
       - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
       # Increase ROS log verbosity
@@ -80,9 +69,9 @@ services:
       # Whitelist specific interface for Fast-RTPS
       - FASTRTPS_WHITELIST_INTERFACES=tailscale0
     # --- Command for serial communication ---
-    command: > # Use multi-line format for clarity
+    command: > 
       bash -c "sleep 2 && \
-               MicroXRCEAgent serial --dev /dev/ttyUSB0 -b 921600"
+               MicroXRCEAgent udp4 -p 8888"
     # Note: Ensure the user running Docker on the host (e.g., 'rodrigo') has permission for /dev/ttyUSB0 (belongs to 'dialout' group).
     # If not, run: sudo usermod -a -G dialout rodrigo (or relevant user) and then REBOOT or log out/in.
 
