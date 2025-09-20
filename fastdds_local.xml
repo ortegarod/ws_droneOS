@@ -54,20 +54,6 @@ So this config works only if:
               </locator>
             </initialPeersList>
           </discovery_config>
-          <initialPeersList>
-            <locator>
-              <udpv4>
-                <address>100.98.63.54</address>
-                <port>7400</port>
-              </udpv4>
-            </locator>
-            <locator>
-              <udpv4>
-                <address>100.101.149.9</address>
-                <port>7400</port>
-              </udpv4>
-            </locator>
-          </initialPeersList>
           <metatrafficUnicastLocatorList>
             <locator>
               <udpv4>
@@ -75,13 +61,6 @@ So this config works only if:
               </udpv4>
             </locator>
           </metatrafficUnicastLocatorList>
-          <userDataUnicastLocatorList>
-            <locator>
-              <udpv4>
-                <port>7401</port>
-              </udpv4>
-            </locator>
-          </userDataUnicastLocatorList>
         </builtin>
       </rtps>
     </participant>
